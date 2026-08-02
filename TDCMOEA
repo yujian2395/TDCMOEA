@@ -37,7 +37,7 @@ classdef TDCMOEA < ALGORITHM
                 end
                 zmin = min(zmin, min(Offspring.objs, [], 1) - 1e-6);
                 if flag == 1
-                    FA = ExploratoryArchive(FA,Offspring, zmin, Ns, e1);
+                    FA = ForwardexplorationArchive(FA,Offspring, zmin, Ns, e1);
                     FEA = FeasibilityArchive(FEA, Offspring, Problem.N,e2); 
                     DA = DiversityArchive(DA, Offspring, zmin, Ns, gen, maxGen);
                     Pop3 = FEA(unidrnd(length(FEA), [1, floor(Problem.N/3)]));
