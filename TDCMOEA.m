@@ -38,7 +38,7 @@ classdef TDCMOEA < ALGORITHM
                 zmin = min(zmin, min(Offspring.objs, [], 1) - 1e-6);
                 if flag == 1
                     FA = ForwardexplorationArchive(FA,Offspring, zmin, Ns, e1);
-                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2); 
+                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2); 
                     DA = DiversityArchive(DA, Offspring, zmin, Ns, gen, maxGen);
                     Pop3 = FEA(unidrnd(length(FEA), [1, floor(Problem.N/3)]));
                     Pop1 = FA;
@@ -60,7 +60,7 @@ classdef TDCMOEA < ALGORITHM
                     end
                         Offspring = [ Offspring3,Offspring4,Offspring1];
                 elseif  flag == 2
-                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2); 
+                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2); 
                     DA = DiversityArchive(DA, Offspring, zmin, Ns, gen, maxGen);
                     LPCA = LayeredProgressiveConstraintArchive(LPCA, Offspring, number , Ns );
                     Pop3 = FEA(unidrnd(length(FEA), [1, floor(Problem.N/3)]));
@@ -85,7 +85,7 @@ classdef TDCMOEA < ALGORITHM
                     Offspring = [ Offspring2,Offspring3,Offspring4];
                 else
                     DA = DiversityArchive(DA, Offspring, zmin, Problem.N/2, gen, maxGen);
-                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2);
+                    FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2);
                     Pop1 = DA;
                     Pop2 = FEA(unidrnd(length(FEA), [1, floor(Problem.N/2)]));
                     MatingPool_Pop1_1 = randperm(length(Pop1));
