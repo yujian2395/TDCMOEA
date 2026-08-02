@@ -1,0 +1,83 @@
+function PCA = LayeredProgressiveConstraintArchive(PCA, Offspring,activeCons, N)
+
+    PCA = [PCA,Offspring];
+    tmpPop = struct('decs', [], 'objs', [], 'cons', []);
+    for i = 1:length(PCA)
+        tmpPop(i).decs = PCA(i).decs;
+        tmpPop(i).objs = PCA(i).objs;
+        cons_all = PCA(i).cons;
+        tmpPop(i).cons = cons_all(activeCons);
+    end
+    CV = sum(max(0, vertcat(tmpPop.cons)), 2);
+    feasible = CV <= 0;
+    FeasiblePop = PCA(feasible);
+    NonDomPop = [];
+    if ~isempty(FeasiblePop)
+        NonDominated = DominationCal(FeasiblePop, 1, 1e-6);
+        NonDomPop = FeasiblePop(NonDominated);
+    end
+    if isempty(NonDomPop) && ~isempty(FeasiblePop)
+        NonDomPop = FeasiblePop(1);
+    end
+    if isempty(NonDomPop)
+        NonDomPop = PCA(1);
+    end
+    S = NonDomPop; 
+    [P, M] = size(S.objs);
+    if P <= N
+        finalPop = S;
+        while length(finalPop) < N
+            finalPop = [finalPop, S];
+        end
+        finalPop = finalPop(1:N);
+        PCA = finalPop;
+        return;
+    end
+    Obj = S.objs;
+    zmin = min(Obj, [], 1);
+    zmax = max(Obj, [], 1);
+    Obj_norm = (Obj - zmin) ./ (zmax - zmin + 1e-10);
+    row_norm = sqrt(sum(Obj_norm.^2, 2));
+    zero_rows = row_norm < 1e-12;
+    if any(zero_rows)
+        diag_dir = ones(1, M) / sqrt(M);
+        for i = find(zero_rows)'
+            Obj_norm(i, :) = diag_dir * 1e-12;
+        end
+    end
+    [W, Ns] = UniformPoint(N, M);
+    diag_dir = ones(1, M) / sqrt(M);
+    W(1, :) = diag_dir;
+    Angle_W_to_W = acos(1 - pdist2(W, W, 'cosine'));
+    Angle_W_to_W(eye(Ns) == 1) = inf;
+    h = mean(min(Angle_W_to_W));
+    cos_vals = 1 - pdist2(W, Obj_norm, 'cosine');
+    cos_vals = max(min(cos_vals, 1), -1);
+    Angle_S_to_W = sin(acos(cos_vals)); 
+    selected = false(1, P);
+    finalPop = [];
+    for i = 1:Ns
+        Angle = Angle_S_to_W(i, :);
+        list = Angle <= h;
+        if sum(list) == 0
+            [~, idx] = min(Angle);
+            list(idx) = true;
+        end
+        cand = find(list);
+        cand_CV = CV(cand);
+        cand_feasible = cand_CV <= 1e-6;
+        if any(cand_feasible)
+
+            feas_cand = cand(cand_feasible);
+            [~, best_idx] = min(Angle(feas_cand));
+            best = feas_cand(best_idx);
+        else
+
+            [~, best_idx] = min(cand_CV);
+            best = cand(best_idx);
+        end
+        finalPop = [finalPop, S(best)];
+        selected(best) = true; 
+    end
+    PCA = finalPop;
+end
