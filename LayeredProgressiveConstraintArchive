@@ -1,16 +1,16 @@
-function PCA = LayeredProgressiveConstraintArchive(PCA, Offspring,activeCons, N)
+function LPCA = LayeredProgressiveConstraintArchive(LPCA, Offspring,activeCons, N)
 
-    PCA = [PCA,Offspring];
+    LPCA = [LPCA,Offspring];
     tmpPop = struct('decs', [], 'objs', [], 'cons', []);
-    for i = 1:length(PCA)
-        tmpPop(i).decs = PCA(i).decs;
-        tmpPop(i).objs = PCA(i).objs;
-        cons_all = PCA(i).cons;
+    for i = 1:length(LPCA)
+        tmpPop(i).decs = LPCA(i).decs;
+        tmpPop(i).objs = LPCA(i).objs;
+        cons_all = LPCA(i).cons;
         tmpPop(i).cons = cons_all(activeCons);
     end
     CV = sum(max(0, vertcat(tmpPop.cons)), 2);
     feasible = CV <= 0;
-    FeasiblePop = PCA(feasible);
+    FeasiblePop = LPCA(feasible);
     NonDomPop = [];
     if ~isempty(FeasiblePop)
         NonDominated = DominationCal(FeasiblePop, 1, 1e-6);
@@ -20,7 +20,7 @@ function PCA = LayeredProgressiveConstraintArchive(PCA, Offspring,activeCons, N)
         NonDomPop = FeasiblePop(1);
     end
     if isempty(NonDomPop)
-        NonDomPop = PCA(1);
+        NonDomPop = LPCA(1);
     end
     S = NonDomPop; 
     [P, M] = size(S.objs);
@@ -30,7 +30,7 @@ function PCA = LayeredProgressiveConstraintArchive(PCA, Offspring,activeCons, N)
             finalPop = [finalPop, S];
         end
         finalPop = finalPop(1:N);
-        PCA = finalPop;
+        LPCA = finalPop;
         return;
     end
     Obj = S.objs;
@@ -79,5 +79,5 @@ function PCA = LayeredProgressiveConstraintArchive(PCA, Offspring,activeCons, N)
         finalPop = [finalPop, S(best)];
         selected(best) = true; 
     end
-    PCA = finalPop;
+    LPCA = finalPop;
 end
