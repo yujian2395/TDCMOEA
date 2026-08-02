@@ -14,7 +14,7 @@ classdef TDCMOEA < ALGORITHM
             FEA = Population;
             FA = [];
             DA = [];
-            PCA = [];
+            LPCA = [];
             Offspring = Population;
             zmin = min(Population.objs,[],1) - 1e-6;
             flag = 1;
@@ -62,10 +62,10 @@ classdef TDCMOEA < ALGORITHM
                 elseif  flag == 2
                     FEA = FeasibilityexploitationArchive(FEA, Offspring, Problem.N,e2); 
                     DA = DiversityArchive(DA, Offspring, zmin, Ns, gen, maxGen);
-                    PCA = ProgressiveConstraintArchive(PCA, Offspring, number , Ns );
+                    LPCA = LayeredProgressiveConstraintArchive(LPCA, Offspring, number , Ns );
                     Pop3 = FEA(unidrnd(length(FEA), [1, floor(Problem.N/3)]));
                     Pop2 = DA;
-                    Pop4 = PCA;
+                    Pop4 = LPCA;
                     MatingPool_Pop2_1 = randperm(length(Pop2));
                     MatingPool_Pop2_2 = randperm(length(Pop2));
                     MatingPool_Pop3_1 = randperm(length(Pop3));
