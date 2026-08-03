@@ -71,14 +71,17 @@ This project contains the MATLAB source code for the Three-Stage Co-Evolutionary
   - Selects representative solutions according to angular relationships.
   - Prioritizes feasible solutions and selects solutions with smaller constraint violations when necessary.
 
-Instructions for Use
-1.Ensure the MATLAB environment is installed and properly configured with the required paths. 
-2.Place all .m files in the same working directory. 
-3.Use the PlatEMO platform to execute the algorithm. Define the optimization problem using the Problem class in PlatEMO. 
-4.Monitor the optimization results, including the evolution of the population and the final Pareto front. 
-Notes
+## Instructions for Use
+
+1. Ensure the MATLAB environment is installed and properly configured with the required paths.
+2. Place all `.m` files in the same working directory.
+3. Use the PlatEMO platform to execute the algorithm. Define the optimization problem using the `Problem` class in PlatEMO.
+4. Monitor the optimization results, including the evolution of the population and the final Pareto front.
+
+## Notes
+
 - Input data must conform to the multi-objective optimization problem format, including objective values (`objs`) and constraints (`cons`).
-- Algorithm performance depends on parameter settings. The key parameters in the dominance relation function are the distance threshold (`R_eff`) and the neighbor-count difference threshold (`neighborThresh `), which can be fine-tuned in the code.
+- Algorithm performance depends on parameter settings. The key parameters in the dominance relation function are the distance threshold (`R_eff`) and the neighbor-count difference threshold (`neighborThresh`), which can be fine-tuned in the code.
 
 ## Contact
 For any questions or suggestions, please contact the author.
