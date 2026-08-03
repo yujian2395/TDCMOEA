@@ -1,8 +1,8 @@
 classdef TDCMOEA < ALGORITHM
-% <2025> <multi/many> <real/binary/permutation><constrained/none>
-% Constraint-Pareto dominance and diversity enhancement strategy based CMOEA
-% e1 --- 1 --- Type of environmental selection for forward exploration(1. SPEA2 2. NSGA-II 3. modified NSGA-III)
-% e2 --- 1 --- Type of environmental selection for feasible exploitation(1. SPEA2 2. NSGA-II 3. modified NSGA-III)
+% <2026> <multi/many> <real/binary/permutation><constrained/none>
+% Three-Stage Co-Evolutionary Framework Based on Neighborhood Density for Constrained Multi-objective Optimization Problems
+% e1 --- 1 --- Type of environmental selection for forward exploration (1. SPEA2 2. NSGA-II 3. modified NSGA-III)
+% e2 --- 1 --- Type of environmental selection for feasible exploitation (1. SPEA2 2. NSGA-II 3. modified NSGA-III)
 
     methods
         function main(Algorithm,Problem)
